@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:37:46 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/16 20:04:01 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/16 22:40:39 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,18 @@ int	demeter(t_philo *philo)
 	
 	pthread_mutex_lock(&philo->data->forks[philo->frst_fork].mutex);
 	time = kronos() - philo->born_time;
-	if (time - philo->last_ate >= philo->atributes[TTDIE])
+	if (time - philo->last_ate >= philo->atributes[TTDIE] + philo->last_ate)
+	{
 		hermes(philo, RIP, time);
-	hermes(philo, FORK, time);
+	}
+	if (hermes(philo, FORK, time) == -1)
+		return (-1);
+	//hermes(philo, FORK, time);
 	pthread_mutex_lock(&philo->data->forks[philo->scnd_fork].mutex);
 	time = kronos() - philo->born_time;
-	hermes(philo, FORK, time);
+	if (hermes(philo, FORK, time) == -1)
+		return (-1);
+	//hermes(philo, FORK, time);
 	time = kronos() - philo->born_time;
 	if (hypnos(philo, kronos(), TTEAT) == -1) 
 	{
@@ -123,7 +129,7 @@ int	thanatos(t_data *data)
 {
 	int			i;
 	long long	time;
-
+	
 	while (42)
 	{
 		i = 0;
@@ -133,9 +139,11 @@ int	thanatos(t_data *data)
 			pthread_mutex_lock(&data->genesis);
 			if (time - data->philos[i].last_ate >= data->atributes[TTDIE] + data->philos[i].last_ate)
 			{
+				pthread_mutex_lock(&data->aux_mtx);
 				data->stop = true;
+				pthread_mutex_unlock(&data->aux_mtx);
 				pthread_mutex_lock(&data->stdout_mtx);
-				printf(""RED"| %lld ms |"YW" %d"WT" %s\n",time ,data->philos[i].id + 1, RIP);
+				printf(""RED"| %lld ms |"YW" %d"WT" %s\n",kronos() - data->born_time ,data->philos[i].id + 1, RAP);
 				// pthread_mutex_unlock(&data->stdout_mtx);
 				pthread_mutex_unlock(&data->genesis);
 				return (1);

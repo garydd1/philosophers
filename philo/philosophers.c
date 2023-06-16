@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:03:07 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/16 20:00:51 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/16 22:19:54 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	*physis(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *) arg;
+	philo->born_time = kronos();
 	pthread_mutex_lock(&philo->data->genesis);
 	while (philo->data->end == false)
 	{
 	}
-	philo->born_time = kronos();
 	pthread_mutex_unlock(&philo->data->genesis);
 	if ((philo->id + 1) % 2 == 0)
 	{
@@ -37,13 +37,13 @@ void	*physis(void *arg)
 	}
 	while (42)
 	{
-		pthread_mutex_lock(&philo->data->genesis);
+		pthread_mutex_lock(&philo->data->aux_mtx);
 		if (philo->data->stop == true)
 		{
-			pthread_mutex_unlock(&philo->data->genesis);
+			pthread_mutex_unlock(&philo->data->aux_mtx);
 			break ;
 		}
-		pthread_mutex_unlock(&philo->data->genesis);
+		pthread_mutex_unlock(&philo->data->aux_mtx);
 		if (demeter(philo) == - 1)
 			break ;
 	}

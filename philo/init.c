@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:59:52 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/16 17:44:28 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/16 22:13:18 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int	init(t_data *data, int argc, char **argv)
 		data->atributes[MUST_EAT] = MAX_EAT;
 	printf("\nthere are %d philos\n", data->philo_nbr);
 	create_forks(data);
+	pthread_mutex_init(&data->aux_mtx, NULL);
 	pthread_mutex_init(&data->stdout_mtx, NULL);
 	prometeus(data);
 	return (0);

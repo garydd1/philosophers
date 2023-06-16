@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:53:12 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/16 19:47:32 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/16 22:41:57 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define SLEEP "Is sleeping."
 # define WOKE "Woke up with hunger!"
 # define RIP "*****************RIP*******************"
+# define RAP "*****************RAP*******************"
 # define WT   "\x1b[1;37m"
 # define YW "\x1b[1;33m"
 # define RED "\x1b[1;31m"
@@ -69,6 +70,7 @@ typedef struct s_macro_data
 	bool			stop;
 	pthread_mutex_t	genesis;
 	pthread_mutex_t	stdout_mtx;
+	pthread_mutex_t aux_mtx;
 	t_fork			*forks;
 	t_philo			*philos;
 }	t_data;
