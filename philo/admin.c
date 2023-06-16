@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:37:46 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/05/16 18:08:39 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/16 20:04:01 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@
  */
 int	hermes(t_philo *philo, char *msg, long long time)
 {
+	pthread_mutex_lock(&philo->data->genesis);
+	if (philo->data->stop == true)
+	{
+		pthread_mutex_unlock(&philo->data->genesis);
+		return (-1);
+	}
+	pthread_mutex_unlock(&philo->data->genesis);
 	pthread_mutex_lock(&philo->data->stdout_mtx);
 	printf(""BLUE"| %lld ms |"YW" %d"WT" %s\n",time ,philo->id + 1, msg);
 	pthread_mutex_unlock(&philo->data->stdout_mtx);
@@ -53,16 +60,23 @@ int	hypnos(t_philo *philo, long long time, int action)
 		hermes(philo, SLEEP, kronos() - philo->born_time);
 	while (kronos() - time <= philo->atributes[action])
 	{
-		if (action == TTSLEEP && kronos() - philo->last_ate > \
-		(philo->atributes[TTDIE] / 3) * 2)
+		pthread_mutex_lock(&philo->data->genesis);
+		if (philo->data->stop == true)
 		{
-			hermes(philo, WOKE, kronos() - philo->born_time);
-			break ;
+			pthread_mutex_unlock(&philo->data->genesis);
+			return (-1);
 		}
+		pthread_mutex_unlock(&philo->data->genesis);
 	}
 	if (action == TTSLEEP)
 		hermes(philo, THINK, kronos() - philo->born_time);
 	return (0);
+}
+
+int	nymph (void)
+{
+	
+	return (-1);
 }
 
 /**
@@ -75,7 +89,7 @@ int	hypnos(t_philo *philo, long long time, int action)
 int	demeter(t_philo *philo)
 {
 	long long	time;
-
+	
 	pthread_mutex_lock(&philo->data->forks[philo->frst_fork].mutex);
 	time = kronos() - philo->born_time;
 	if (time - philo->last_ate >= philo->atributes[TTDIE])
@@ -85,10 +99,16 @@ int	demeter(t_philo *philo)
 	time = kronos() - philo->born_time;
 	hermes(philo, FORK, time);
 	time = kronos() - philo->born_time;
-	hypnos(philo, kronos(), TTEAT);
+	if (hypnos(philo, kronos(), TTEAT) == -1) 
+	{
+		pthread_mutex_unlock(&philo->data->forks[philo->frst_fork].mutex);
+		pthread_mutex_unlock(&philo->data->forks[philo->scnd_fork].mutex);
+		return (-1);
+	}
 	pthread_mutex_unlock(&philo->data->forks[philo->frst_fork].mutex);
 	pthread_mutex_unlock(&philo->data->forks[philo->scnd_fork].mutex);
-	hypnos(philo, kronos(), TTSLEEP);
+	if (hypnos(philo, kronos(), TTSLEEP) == -1)
+		return (-1);
 	return (0);
 }
 
@@ -111,16 +131,18 @@ int	thanatos(t_data *data)
 		{
 			time = kronos() - data->born_time;
 			pthread_mutex_lock(&data->genesis);
-			if (time - data->philos[i].last_ate >= data->atributes[TTDIE])
+			if (time - data->philos[i].last_ate >= data->atributes[TTDIE] + data->philos[i].last_ate)
 			{
-				data->end = true;
+				data->stop = true;
+				pthread_mutex_lock(&data->stdout_mtx);
+				printf(""RED"| %lld ms |"YW" %d"WT" %s\n",time ,data->philos[i].id + 1, RIP);
+				// pthread_mutex_unlock(&data->stdout_mtx);
 				pthread_mutex_unlock(&data->genesis);
-				hermes(&data->philos[i], "************RAAP***************",time);
 				return (1);
 			}
 			pthread_mutex_unlock(&data->genesis);
 			i++;
-		}		
+		}
 	}
 	return (0);
 }

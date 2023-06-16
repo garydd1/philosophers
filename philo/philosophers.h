@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:53:12 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/05/16 16:38:01 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/16 19:47:32 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define RIP "*****************RIP*******************"
 # define WT   "\x1b[1;37m"
 # define YW "\x1b[1;33m"
+# define RED "\x1b[1;31m"
 # define BLUE "\x1b[1;36m"
 # define PINK "\x1b[1;35m"
 # define RST    "\x1b[0m"
@@ -63,10 +64,11 @@ typedef struct s_macro_data
 	char			**argv;
 	int				atributes[ATR_COUNT];
 	int				i;
-	pthread_mutex_t	stdout_mtx;
 	long long		born_time;
-	pthread_mutex_t	genesis;
 	bool			end;
+	bool			stop;
+	pthread_mutex_t	genesis;
+	pthread_mutex_t	stdout_mtx;
 	t_fork			*forks;
 	t_philo			*philos;
 }	t_data;

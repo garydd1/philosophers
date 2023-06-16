@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:03:07 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/05/16 18:01:03 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/16 20:00:51 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,17 @@ void	*physis(void *arg)
 	}
 	while (42)
 	{
-		demeter(philo);
+		pthread_mutex_lock(&philo->data->genesis);
+		if (philo->data->stop == true)
+		{
+			pthread_mutex_unlock(&philo->data->genesis);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->genesis);
+		if (demeter(philo) == - 1)
+			break ;
 	}
-	pthread_exit(NULL);
+	return(NULL);
 }
 
 /**
@@ -65,6 +73,10 @@ int	main(int argc, char **argv)
 	i = 0;
 	init(&data, argc, argv);
 	thanatos(&data);
-	pthread_exit(0);
+	while (i < data.philo_nbr)
+	{
+		pthread_join(data.philos[i].tid, NULL);
+		i++;
+	}
 	return (0);
 }

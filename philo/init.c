@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:59:52 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/14 17:39:05 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:44:28 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	prometeus(t_data *data)
 		usleep(1);
 		data->philos[data->i].tid = (thread_id);
 		(data->i)++;
-		pthread_detach(thread_id);
+		//pthread_detach(thread_id);
 	}
 	data->end = true;
 	data->born_time = kronos();
