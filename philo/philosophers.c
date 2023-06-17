@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:03:07 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 00:41:50 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 13:48:49 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*physis(void *arg)
 	}
 	pthread_mutex_unlock(&philo->data->genesis);
 	philo->born_time = kronos();
-	if ((philo->id + 1) % 2 == 0)
+	if ((philo->id) % 2 == 1)
 	{
 		hermes(philo, THINK, kronos() - philo->born_time);
 		usleep(84);

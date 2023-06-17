@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:49:32 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/14 17:32:40 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 13:52:40 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ int	create_forks(t_data *data)
 	while (i < data->philo_nbr)
 	{
 		data->forks[i].id = i;
-		pthread_mutex_init(&data->forks[i].mutex, NULL);
+		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
+		{
+			printf("error mutex init\n");
+			return (1);	
+		}
 		i++;
-		usleep(10);
 	}
 	return (0);
 }

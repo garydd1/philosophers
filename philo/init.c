@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:59:52 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 00:06:15 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 13:58:54 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	epimetheus(t_data *data)
 			data->philos[i].atributes[j] = ft_atoi(data->argv[j + 2]);
 			if (data->argc == 5)
 				data->philos[i].atributes[MUST_EAT] = MAX_EAT;
+			else
+				data->philos[i].atributes[MUST_EAT] = ft_atoi(data->argv[5]);
 			j++;
 		}
 		i++;

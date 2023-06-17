@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:37:46 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 12:53:26 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 13:24:38 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ int	hypnos(t_philo *philo, long long time, int action)
 {	
 	if (action == TTEAT)
 	{
+		hermes(philo, EAT, time - philo->born_time);
 		pthread_mutex_lock(&philo->data->genesis);
 		philo->last_ate = time - philo->born_time;
 		pthread_mutex_unlock(&philo->data->genesis);
-		hermes(philo, EAT, time - philo->born_time);
 	}
 	if (action == TTSLEEP)
 		hermes(philo, SLEEP, kronos() - philo->born_time);
@@ -126,7 +126,7 @@ int	demeter(t_philo *philo)
  * can guide them to the underworld.
  * @param data 
  * @return int 
- */
+ */ //CHECKPOINT
 int	thanatos(t_data *data)
 {
 	int			i;
@@ -139,13 +139,14 @@ int	thanatos(t_data *data)
 		{
 			time = kronos() - data->born_time;
 			pthread_mutex_lock(&data->genesis);
-			if (time - data->philos[i].last_ate >= data->atributes[TTDIE] + data->philos[i].last_ate)
+			if ((kronos() - data->born_time) - data->philos[i].last_ate >= data->atributes[TTDIE])
 			{
 				pthread_mutex_lock(&data->aux_mtx);
 				data->stop = true;
 				pthread_mutex_unlock(&data->aux_mtx);
 				pthread_mutex_lock(&data->stdout_mtx);
-				printf(""RED"| %lld ms |"YW" %d"WT" %s\n",kronos() - data->born_time ,data->philos[i].id + 1, RAP);
+				printf("LAST EAT %lld\n", data->philos[i].last_ate);
+				printf(""RED"| %lld ms |"YW" %d"WT" %s\n",time ,data->philos[i].id + 1, RAP);
 				pthread_mutex_unlock(&data->genesis);
 				return (1);
 			}

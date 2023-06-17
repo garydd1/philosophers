@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:09:54 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/05/12 22:30:46 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:03:36 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,28 @@ long	long	kronos(void)
 
 	gettimeofday(&time, NULL);	
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+}
+
+long	long	kronoss(long long born_time)
+{
+	t_time time;
+
+	gettimeofday(&time, NULL);	
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000) - born_time);
+}
+
+bool	my_usleep(long long sleep_time, t_philo *philo)
+{
+	long long	sleep_start;
+	long long	cur_time;
+
+	sleep_start = kronoss(philo->born_time);
+	cur_time = sleep_start;
+	while (cur_time - sleep_start < sleep_time)
+	{
+		if (death_check(philo->data))
+			return (false);
+		cur_time = kronoss(philo->born_time);
+	}
+	return (true);
 }
