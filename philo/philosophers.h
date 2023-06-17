@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:53:12 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/16 22:41:57 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/16 22:44:27 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_macro_data
 	pthread_mutex_t	genesis;
 	pthread_mutex_t	stdout_mtx;
 	pthread_mutex_t aux_mtx;
+	t_time			the_time;
 	t_fork			*forks;
 	t_philo			*philos;
 }	t_data;

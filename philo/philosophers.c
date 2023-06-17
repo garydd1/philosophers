@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:03:07 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/16 22:19:54 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 00:41:50 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	*physis(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *) arg;
-	philo->born_time = kronos();
 	pthread_mutex_lock(&philo->data->genesis);
 	while (philo->data->end == false)
 	{
 	}
 	pthread_mutex_unlock(&philo->data->genesis);
+	philo->born_time = kronos();
 	if ((philo->id + 1) % 2 == 0)
 	{
 		hermes(philo, THINK, kronos() - philo->born_time);
@@ -45,7 +45,10 @@ void	*physis(void *arg)
 		}
 		pthread_mutex_unlock(&philo->data->aux_mtx);
 		if (demeter(philo) == - 1)
+		{
+			// printf("ERROR Philo: %d\n", philo->id);
 			break ;
+		}
 	}
 	return(NULL);
 }
@@ -78,5 +81,7 @@ int	main(int argc, char **argv)
 		pthread_join(data.philos[i].tid, NULL);
 		i++;
 	}
+	// morgan_freeman(&data);
+	pthread_mutex_unlock(&data.stdout_mtx);
 	return (0);
 }
