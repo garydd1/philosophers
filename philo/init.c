@@ -6,11 +6,24 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:59:52 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 13:58:54 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 17:02:29 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+void	unpick_forks(t_philo *philo, t_data *data)
+{
+	pthread_mutex_unlock(&data->forks[philo->id].mutex);
+	hermess(philo->data, philo, "released a fork", "");
+	if (data->philo_nbr == 1)
+		return ;
+	if (philo->id + 1 == data->philo_nbr)
+		pthread_mutex_unlock(&data->forks[0].mutex);
+	else
+		pthread_mutex_unlock(&data->forks[philo->id + 1].mutex);
+	hermess(philo->data, philo, "released another fork", "");
+}
 
 /**
  * @brief Pandora married with epimetheus...
@@ -27,23 +40,7 @@ int	pandora(t_data *data, int i)
 	data->philos[i].id = i;
 	data->philos[i].data = data;
 	data->philos[i].alive = true;
-	if ((i + 1) % 2 == 0)
-	{
-		data->philos[i].frst_fork = i + 1;
-		data->philos[i].scnd_fork = i;
-	}
-	else
-	{
-		data->philos[i].frst_fork = i;
-		data->philos[i].scnd_fork = i + 1;
-	}
-	if (i == data->philo_nbr - 1)
-	{
-		data->philos[i].frst_fork = 0;
-		if ((i + 1) % 2 != 0)
-			data->philos[i].scnd_fork = i;
-	}
-	printf("\nphilo:%d first fork: %d, second:%d\n", i+1, data->philos[i].frst_fork +1, data->philos[i].scnd_fork +1);
+	data->philos[i].allowed_to_eat = true;
 	return (0);
 }
 
@@ -76,6 +73,7 @@ int	epimetheus(t_data *data)
 		}
 		i++;
 	}
+	pthread_mutex_init(&data->genesis, NULL);
 	return (0);
 }
 
@@ -94,23 +92,22 @@ int	prometeus(t_data *data)
 
 	data->i = 0;
 	data->philos = malloc(sizeof(t_philo) * data->philo_nbr); //NEED FREE
+	if (!data->philos)
+		return (1);
 	memset(data->philos, 0, sizeof(t_philo));
 	epimetheus(data);
-	pthread_mutex_init(&data->genesis, NULL);
-	pthread_mutex_lock(&data->genesis);
+	data->born_time = kronoss(0);
 	while (data->i < data->philo_nbr)
 	{
+		data->philos[data->i].born_time = data->born_time;
 		if (pthread_create(&thread_id, NULL, physis, \
 		&data->philos[data->i]) != 0)
 			return (1);
 		printf("\nborn thread id: %lu . FILOSOFO SALVAJE APARECE: %d \n", (unsigned long)thread_id, data->i + 1);
-		usleep(1);
 		data->philos[data->i].tid = (thread_id);
 		(data->i)++;
-		// pthread_detach(thread_id);
 	}
 	data->end = true;
-	data->born_time = kronos();
 	pthread_mutex_unlock(&data->genesis);
 	return (0);
 }
@@ -138,10 +135,14 @@ int	init(t_data *data, int argc, char **argv)
 	}
 	if (argc == 5)
 		data->atributes[MUST_EAT] = MAX_EAT;
+	else
+		data->atributes[MUST_EAT] = ft_atoi(argv[5]);
 	printf("\nthere are %d philos\n", data->philo_nbr);
-	create_forks(data);
-	pthread_mutex_init(&data->aux_mtx, NULL);
-	pthread_mutex_init(&data->stdout_mtx, NULL);
+	if (create_forks(data) != 0)
+		return (1);
+	if (pthread_mutex_init(&data->aux_mtx, NULL) != 0 || \
+	pthread_mutex_init(&data->stdout_mtx, NULL) != 0)
+		return (1);
 	prometeus(data);
 	return (0);
 }

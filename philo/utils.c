@@ -6,31 +6,18 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:02:03 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/05/07 14:28:40 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:44:35 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
 /**
- * @brief Creates a new node with the int value passed as parameter. 
+ * @brief returns 1 if the char is a number, 0 otherwise.
  * 
- * @param num 
- * @return t_data* 
+ * @param str 
+ * @return int 
  */
-// t_data	*ft_lstnew(int num)
-// {
-// 	t_data	*new_node;
-
-// 	new_node = malloc(sizeof(t_data));
-// 	if (!new_node)
-// 		return (NULL);
-// 	new_node->philos->id  = num;
-// 	new_node->philos->next = NULL;
-// 	new_node->philos->previous = NULL;
-// 	return (new_node);
-// }
-
 static int	ft_is_num(char str)
 {
 	int	flag;
@@ -68,4 +55,38 @@ int	ft_atoi(const char *str)
 	}
 		number = number * sign;
 	return (number);
+}
+
+bool	ft_error_aux(char *argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+	{
+		if (ft_is_num(argv[i]) == 0)
+		{
+			printf("ARGS NOT NUMERICAL\n");
+			return (true);
+		}
+		i++;
+	}
+	return (false);
+}
+
+bool ft_error_check(int argc, char **argv)
+{
+	if (argc < 5 || argc > 6)
+	{
+		printf("ARG_ERROR\n");
+		return (true);
+	}
+	argv++;
+	while(*argv)
+	{
+		if (ft_error_aux(*argv) == true)
+			return (true);
+		argv++;
+	}
+	return (false);
 }

@@ -6,11 +6,22 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:37:46 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 13:24:38 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 18:08:01 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+void	hermess(t_data *data, t_philo *philo, char *msg, char *colour)
+{
+	pthread_mutex_lock(&data->aux_mtx);
+	if (data->stop == false && philo->allowed_to_eat == true)
+	{
+		printf("%s%lld\tms | philosopher %d %s\033[0m\n", colour, \
+		kronoss(philo->born_time), philo->id + 1, msg);
+	}
+	pthread_mutex_unlock(&data->aux_mtx);
+}
 
 /**
  * @brief Hermes, son of Zeus, god of heralds, commerce and
@@ -145,7 +156,6 @@ int	thanatos(t_data *data)
 				data->stop = true;
 				pthread_mutex_unlock(&data->aux_mtx);
 				pthread_mutex_lock(&data->stdout_mtx);
-				printf("LAST EAT %lld\n", data->philos[i].last_ate);
 				printf(""RED"| %lld ms |"YW" %d"WT" %s\n",time ,data->philos[i].id + 1, RAP);
 				pthread_mutex_unlock(&data->genesis);
 				return (1);
@@ -155,4 +165,55 @@ int	thanatos(t_data *data)
 		}
 	}
 	return (0);
+}
+
+static bool	nymphh(t_data *data)
+{
+	int	i;
+	int	meals_needed;
+
+	i = 0;
+	meals_needed = data->philo_nbr;
+	while (i < data->philo_nbr)
+	{
+		if (data->philos[i].eat_count == data->atributes[MUST_EAT])
+			meals_needed--;
+		if (meals_needed <= 0)
+		{
+			data->stop = true;
+			pthread_mutex_unlock(&data->aux_mtx);
+			return (printf("All Phils have eaten!\n", true));
+		}
+		i++;
+	}
+	return (false);
+}
+
+void	thanatoss(t_data *data)
+{
+	int	i;
+	long long	time;
+
+	while (true)
+	{
+		i = 0;
+		while (i < data->philo_nbr)
+		{
+			pthread_mutex_lock(&data->aux_mtx);
+			time = kronoss(data->philos[i].born_time);
+			if (nymphh(data) == true)
+				return ;
+			if (time - \
+			data->philos[i].last_ate >= data->atributes[TTDIE] && data->stop == false)
+			{
+				printf("\033[1;31m%lld\tms | philosopher %d died. Rip.*************\n", \
+				time, data->philos[i].id + 1);
+				data->stop = true;
+				pthread_mutex_unlock(&data->aux_mtx);
+				return ;
+			}
+			pthread_mutex_unlock(&data->aux_mtx);
+			i++;
+		}
+	}
 }

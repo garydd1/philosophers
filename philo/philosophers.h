@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:53:12 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/16 22:44:27 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/17 17:52:44 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_macro_data
 typedef struct s_philosopher
 {
 	bool			alive;
+	bool			allowed_to_eat;
 	int				id;
 	int				atributes[ATR_COUNT];
 	int				eat_count;
@@ -92,22 +93,34 @@ typedef struct s_philosopher
 }	t_philo;
 
 //MAIN
+
 void			*physis(void *arg);
+bool			stop_check(t_data *data);
 
 //INIT
-int				init(t_data *data, int argc, char **argv);
 
+int				init(t_data *data, int argc, char **argv);
+void			unpick_forks(t_philo *philo, t_data *data);
 //FORKS
+
 int				create_forks(t_data *data);
 
 //UTILS
+
 int				ft_atoi(const char *str);
+bool			ft_error_check(int argc, char **argv);
 
 //ADMIN
+
 int				thanatos(t_data *data);
 int				demeter(t_philo *philo);
 int				hermes(t_philo *philo, char *msg, long long time);
+void			hermess(t_data *data, t_philo *philo, char *msg, char *colour);
+void			thanatoss(t_data *data);
 
 //THE TIME
+
 long long		kronos(void);
+long long		kronoss(long long born_time);
+bool			my_usleep(long long sleep_time, t_philo *philo);
 #endif
