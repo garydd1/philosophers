@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:59:52 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/19 17:23:16 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:33:18 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void	unpick_forks(t_philo *philo, t_data *data)
 {
 	pthread_mutex_unlock(&data->forks[philo->id].mutex);
-	hermess(philo->data, philo, "released a fork", "");
+	hermes(philo->data, philo, "released a fork", "");
 	if (data->philo_nbr == 1)
 		return ;
 	if (philo->id + 1 == data->philo_nbr)
 		pthread_mutex_unlock(&data->forks[0].mutex);
 	else
 		pthread_mutex_unlock(&data->forks[philo->id + 1].mutex);
-	hermess(philo->data, philo, "released another fork", "");
+	hermes(philo->data, philo, "released another fork", "");
 }
 
 /**
@@ -91,19 +91,18 @@ int	prometeus(t_data *data)
 	pthread_t	thread_id;
 
 	data->i = 0;
-	data->philos = malloc(sizeof(t_philo) * data->philo_nbr); //NEED FREE
+	data->philos = malloc(sizeof(t_philo) * data->philo_nbr);
 	if (!data->philos)
 		return (1);
 	memset(data->philos, 0, sizeof(t_philo));
 	epimetheus(data);
-	data->born_time = kronoss(0);
+	data->born_time = kronos(0);
 	while (data->i < data->philo_nbr)
 	{
 		data->philos[data->i].born_time = data->born_time;
 		if (pthread_create(&thread_id, NULL, physis, \
 		&data->philos[data->i]) != 0)
 			return (1);
-		//printf("\nborn thread id: %lu . FILOSOFO SALVAJE APARECE: %d \n", (unsigned long)thread_id, data->i + 1);
 		data->philos[data->i].tid = (thread_id);
 		(data->i)++;
 	}
@@ -137,7 +136,6 @@ int	init(t_data *data, int argc, char **argv)
 		data->atributes[MUST_EAT] = MAX_EAT;
 	else
 		data->atributes[MUST_EAT] = ft_atoi(argv[5]);
-	//printf("\nthere are %d philos\n", data->philo_nbr);
 	if (create_forks(data) != 0)
 		return (1);
 	if (pthread_mutex_init(&data->aux_mtx, NULL) != 0 || \

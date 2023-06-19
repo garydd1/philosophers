@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:49:32 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 15:02:41 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:45:25 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	create_forks(t_data *data)
 	int	i;
 
 	i = 0;
-	data->forks = malloc(sizeof(t_fork) * data->philo_nbr); //NEED FREE
+	data->forks = malloc(sizeof(t_fork) * data->philo_nbr);
 	if (!data->forks)
 		return (1);
 	while (i < data->philo_nbr)
@@ -26,7 +26,7 @@ int	create_forks(t_data *data)
 		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
 		{
 			printf("error mutex init\n");
-			return (1);	
+			return (1);
 		}
 		i++;
 	}

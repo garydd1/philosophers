@@ -2,7 +2,7 @@
 #                                     CONFIG                                   #
 ################################################################################
 
-NAME        := philo
+NAME        := philo_bonus
 CC        := gcc
 FLAGS    := -Wall -Wextra -Werror
 HEADER = ./philosophers.h

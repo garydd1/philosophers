@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:03:07 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/19 18:21:53 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:11:09 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	stop_check(t_data *data)
 static void	pick_forks(t_philo *philo, t_data *data)
 {
 	pthread_mutex_lock(&data->forks[philo->id].mutex);
-	hermess(philo->data, philo, "took a fork", "");
+	hermes(philo->data, philo, "has taken a fork", "");
 	if (data->philo_nbr == 1)
 	{
 		philo->allowed_to_eat = false;
@@ -37,10 +37,17 @@ static void	pick_forks(t_philo *philo, t_data *data)
 		pthread_mutex_lock(&data->forks[0].mutex);
 	else
 		pthread_mutex_lock(&data->forks[philo->id + 1].mutex);
-	hermess(philo->data, philo, "took another fork", "");
+	hermes(philo->data, philo, "has taken a fork	", "");
 }
 
-static bool	eat(t_philo *philo, t_data *data)
+/**
+ * @brief Manage the pick up of the forks with their respective mutexes.
+ * Demeter is the goddess associated with fertility, agriculture and havest.
+ * 
+ * @param philo 
+ * @return int 
+ */
+static bool	demeter(t_philo *philo, t_data *data)
 {
 	int64_t	cur_time;
 
@@ -49,12 +56,12 @@ static bool	eat(t_philo *philo, t_data *data)
 	if (data->stop == false && philo->allowed_to_eat == true)
 	{
 		philo->eat_count++;
-		cur_time = kronoss(philo->born_time);
+		cur_time = kronos(philo->born_time);
 		philo->last_ate = cur_time;
 		printf("%lld\tms | philosopher %d is eating\n", \
-		kronoss(philo->born_time), philo->id + 1);
+		kronos(philo->born_time), philo->id + 1);
 		pthread_mutex_unlock(&data->aux_mtx);
-		if (my_usleep(philo->atributes[TTEAT], philo) == false)
+		if (hypnos(philo->atributes[TTEAT], philo) == false)
 			return (unpick_forks(philo, data), \
 			pthread_mutex_unlock(&data->aux_mtx), false);
 	}
@@ -78,21 +85,21 @@ void	*physis(void *arg)
 	philo = (t_philo *) arg;
 	if ((philo->id) % 2 == 1)
 	{
-		my_usleep(20, philo);
+		hypnos(20, philo);
 	}
-	while (philo->eat_count < philo->atributes[MUST_EAT] ||
+	while (philo->eat_count < philo->atributes[MUST_EAT] || \
 	philo->atributes[MUST_EAT] == MAX_EAT)
 	{
 		if (stop_check(philo->data) == true)
 			break ;
-		if (eat(philo, philo->data) == false)
+		if (demeter(philo, philo->data) == false)
 			return (NULL);
-		hermess(philo->data, philo, "is sleeping", "");
-		if (my_usleep(philo->atributes[TTSLEEP], philo) == false)
+		hermes(philo->data, philo, "is sleeping", "");
+		if (hypnos(philo->atributes[TTSLEEP], philo) == false)
 			return (NULL);
-		hermess(philo->data, philo, "is thinking", "");
+		hermes(philo->data, philo, "is thinking", "");
 	}
-	return(NULL);
+	return (NULL);
 }
 
 /**
@@ -115,14 +122,13 @@ int	main(int argc, char **argv)
 	i = 0;
 	if (init(&data, argc, argv) == 1)
 		return (printf("INIT ERRORS"), 1);
-	//thanatos(&data);
-	thanatoss(&data);
+	thanatos(&data);
 	while (i < data.philo_nbr)
 	{
 		pthread_join(data.philos[i].tid, NULL);
 		i++;
 	}
-	// morgan_freeman(&data);
+	morgan_freeman(&data);
 	pthread_mutex_unlock(&data.stdout_mtx);
 	return (0);
 }

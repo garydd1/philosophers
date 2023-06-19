@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:53:12 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 17:52:44 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:47:20 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_macro_data
 	bool			stop;
 	pthread_mutex_t	genesis;
 	pthread_mutex_t	stdout_mtx;
-	pthread_mutex_t aux_mtx;
+	pthread_mutex_t	aux_mtx;
 	t_time			the_time;
 	t_fork			*forks;
 	t_philo			*philos;
@@ -101,6 +101,7 @@ bool			stop_check(t_data *data);
 
 int				init(t_data *data, int argc, char **argv);
 void			unpick_forks(t_philo *philo, t_data *data);
+
 //FORKS
 
 int				create_forks(t_data *data);
@@ -112,15 +113,16 @@ bool			ft_error_check(int argc, char **argv);
 
 //ADMIN
 
-int				thanatos(t_data *data);
-int				demeter(t_philo *philo);
-int				hermes(t_philo *philo, char *msg, long long time);
-void			hermess(t_data *data, t_philo *philo, char *msg, char *colour);
-void			thanatoss(t_data *data);
+void			hermes(t_data *data, t_philo *philo, char *msg, char *colour);
+void			thanatos(t_data *data);
 
 //THE TIME
 
-long long		kronos(void);
-long long		kronoss(long long born_time);
-bool			my_usleep(long long sleep_time, t_philo *philo);
+long long		kronos(long long born_time);
+bool			hypnos(long long sleep_time, t_philo *philo);
+
+//FREE
+
+int				morgan_freeman(t_data *data);
+
 #endif

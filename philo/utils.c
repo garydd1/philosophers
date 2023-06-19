@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:02:03 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 14:44:35 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:35:13 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ bool	ft_error_aux(char *argv)
 	return (false);
 }
 
-bool ft_error_check(int argc, char **argv)
+bool	ft_error_check(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
 	{
@@ -82,7 +82,7 @@ bool ft_error_check(int argc, char **argv)
 		return (true);
 	}
 	argv++;
-	while(*argv)
+	while (*argv)
 	{
 		if (ft_error_aux(*argv) == true)
 			return (true);
