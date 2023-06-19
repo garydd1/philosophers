@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:59:52 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 17:02:29 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/19 17:23:16 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	prometeus(t_data *data)
 		if (pthread_create(&thread_id, NULL, physis, \
 		&data->philos[data->i]) != 0)
 			return (1);
-		printf("\nborn thread id: %lu . FILOSOFO SALVAJE APARECE: %d \n", (unsigned long)thread_id, data->i + 1);
+		//printf("\nborn thread id: %lu . FILOSOFO SALVAJE APARECE: %d \n", (unsigned long)thread_id, data->i + 1);
 		data->philos[data->i].tid = (thread_id);
 		(data->i)++;
 	}
@@ -137,7 +137,7 @@ int	init(t_data *data, int argc, char **argv)
 		data->atributes[MUST_EAT] = MAX_EAT;
 	else
 		data->atributes[MUST_EAT] = ft_atoi(argv[5]);
-	printf("\nthere are %d philos\n", data->philo_nbr);
+	//printf("\nthere are %d philos\n", data->philo_nbr);
 	if (create_forks(data) != 0)
 		return (1);
 	if (pthread_mutex_init(&data->aux_mtx, NULL) != 0 || \

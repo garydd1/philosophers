@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:03:07 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 17:43:23 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:21:53 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 bool	stop_check(t_data *data)
 {
-	pthread_mutex_lock(&data->aux_mtx);
+	pthread_mutex_lock(&data->genesis);
 	if (data->stop == true)
 	{
-		pthread_mutex_unlock(&data->aux_mtx);
+		pthread_mutex_unlock(&data->genesis);
 		return (true);
 	}
-	pthread_mutex_unlock(&data->aux_mtx);
+	pthread_mutex_unlock(&data->genesis);
 	return (false);
 }
 
@@ -78,7 +78,6 @@ void	*physis(void *arg)
 	philo = (t_philo *) arg;
 	if ((philo->id) % 2 == 1)
 	{
-		//hermes(philo, THINK, 0);
 		my_usleep(20, philo);
 	}
 	while (philo->eat_count < philo->atributes[MUST_EAT] ||

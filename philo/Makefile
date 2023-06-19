@@ -4,7 +4,7 @@
 
 NAME        := philo
 CC        := gcc
-FLAGS    := -Wall -Wextra -Werror -fsanitize=thread -g
+FLAGS    := -Wall -Wextra -Werror #-fsanitize=thread -g
 HEADER = ./philosophers.h
 OBJ_DIR = ./obj
 ################################################################################

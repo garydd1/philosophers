@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:37:46 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/17 18:08:01 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:47:03 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ void	hermess(t_data *data, t_philo *philo, char *msg, char *colour)
 	pthread_mutex_lock(&data->aux_mtx);
 	if (data->stop == false && philo->allowed_to_eat == true)
 	{
+		pthread_mutex_lock(&data->stdout_mtx);
 		printf("%s%lld\tms | philosopher %d %s\033[0m\n", colour, \
 		kronoss(philo->born_time), philo->id + 1, msg);
+		pthread_mutex_unlock(&data->stdout_mtx);
+		pthread_mutex_unlock(&data->aux_mtx);
+		return ;
 	}
 	pthread_mutex_unlock(&data->aux_mtx);
 }
@@ -180,9 +184,14 @@ static bool	nymphh(t_data *data)
 			meals_needed--;
 		if (meals_needed <= 0)
 		{
+			pthread_mutex_lock(&data->genesis);
 			data->stop = true;
+			pthread_mutex_unlock(&data->genesis);
 			pthread_mutex_unlock(&data->aux_mtx);
-			return (printf("All Phils have eaten!\n", true));
+			pthread_mutex_lock(&data->stdout_mtx);
+			printf("All Phils have eaten!\n");
+			pthread_mutex_unlock(&data->stdout_mtx);
+			return ( true);
 		}
 		i++;
 	}
@@ -206,9 +215,13 @@ void	thanatoss(t_data *data)
 			if (time - \
 			data->philos[i].last_ate >= data->atributes[TTDIE] && data->stop == false)
 			{
+				pthread_mutex_lock(&data->stdout_mtx);
 				printf("\033[1;31m%lld\tms | philosopher %d died. Rip.*************\n", \
 				time, data->philos[i].id + 1);
+				pthread_mutex_unlock(&data->stdout_mtx);
+				pthread_mutex_lock(&data->genesis);
 				data->stop = true;
+				pthread_mutex_unlock(&data->genesis);
 				pthread_mutex_unlock(&data->aux_mtx);
 				return ;
 			}
