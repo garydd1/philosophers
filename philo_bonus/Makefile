@@ -3,15 +3,15 @@
 ################################################################################
 
 NAME        := philo_bonus
-CC        := gcc
-FLAGS    := -Wall -Wextra -Werror
+CC        := gcc -pthread
+FLAGS    := -Wall -Wextra -Werror 
 HEADER = ./philosophers.h
 OBJ_DIR = ./obj
 ################################################################################
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRCS        :=      $(wildcard *.c)
+SRCS        :=      $(wildcard ./*.c)
                           
 OBJS        = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
