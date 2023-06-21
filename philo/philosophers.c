@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:03:07 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/19 20:23:06 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:08:53 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,6 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	morgan_freeman(&data);
+	pthread_mutex_unlock(&data.stdout_mtx);
 	return (0);
 }

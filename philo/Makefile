@@ -4,7 +4,7 @@
 
 NAME        := philo
 CC        := gcc
-FLAGS    := -Wall -Wextra -Werror
+FLAGS    := -Wall -Wextra -Werror -pthread 
 HEADER = ./philosophers.h
 OBJ_DIR = ./obj
 ################################################################################

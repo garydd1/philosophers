@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 20:37:46 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/21 18:03:07 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:14:55 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ void	moros(t_data *data, int i, long long time)
 	pthread_mutex_lock(&data->stdout_mtx);
 	printf("\033[1;31m%lld\tms | philosopher %d died.\n", \
 	time, data->philos[i].id + 1);
-	//pthread_mutex_unlock(&data->stdout_mtx);
+	pthread_mutex_unlock(&data->stdout_mtx);
 	pthread_mutex_lock(&data->genesis);
 	data->stop = true;
 	pthread_mutex_unlock(&data->genesis);
-	//pthread_mutex_unlock(&data->aux_mtx);
+	pthread_mutex_unlock(&data->aux_mtx);
 }
 
 /**
