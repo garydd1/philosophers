@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:45:54 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/20 22:05:41 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 16:58:27 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ bool	eat(t_philo *philo, t_data *data)
 		if (philo->eat_count == philo->atributes[MUST_EAT])
 			sem_post(philo->data->ate_sem);
 		cur_time = aion(philo->born_time);
+		sem_wait(philo->eats);
 		philo->last_ate = cur_time;
+		sem_post(philo->eats);
 		sem_wait(data->write_sem);
 		printf("%lld\tms | philosopher %d is eating\n", \
 		aion(philo->born_time), philo->id + 1);

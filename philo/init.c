@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:59:52 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/19 21:08:44 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:37:23 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ int	epimetheus(t_data *data)
 	return (0);
 }
 
-//CHECKPOINT
 /**
  * @brief Creates an array of philosofers, init them and create
  * the threads for each one. 

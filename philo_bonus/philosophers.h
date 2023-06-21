@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:53:12 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/20 20:43:49 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:47:21 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_philosopher
 	long long		last_ate;
 	int				frst_fork;
 	int				scnd_fork;
+	sem_t			*eats;
 	pid_t			pid;
 	t_time			eat_time;
 	t_data			*data;	
@@ -133,7 +134,8 @@ void			*cerberus(void *arg);
 void			*hydra(void *arg);
 
 //EARTH
-bool 			eat(t_philo *philo, t_data *data);
+
+bool			eat(t_philo *philo, t_data *data);
 void			hermes(t_data *data, t_philo *philo, char *msg, char *color);
 // //FREE
 

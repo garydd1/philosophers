@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:26:53 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/20 21:50:55 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 16:59:12 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*cerberus(void *arg)
 		kill(data->philos[i].pid, SIGKILL);
 		i++;
 	}
-	sem_post(data->write_sem);
+	sem_wait(data->write_sem);
 	return (0);
 }
 
@@ -49,7 +49,7 @@ void	*orthrus(void *arg)
 		i++;
 	}
 	sem_wait(data->write_sem);
-	printf("All philosophers ate %d times\n", data->philo_nbr);
+	printf("All philosophers ate %d times\n", data->atributes[MUST_EAT]);
 	i = 0;
 	while (i < data->philo_nbr)
 	{
@@ -76,13 +76,16 @@ void	*hydra(void *arg)
 	while (42)
 	{
 		time = aion(philo->born_time);
+		sem_wait(philo->eats);
 		if (time - philo->last_ate >= philo->atributes[TTDIE])
 		{
+			sem_post(philo->eats);
 			sem_wait(philo->data->write_sem);
 			printf(RED"%lld %d died"RST"\n", time, philo->id + 1);
 			sem_post(philo->data->dead_sem);
 			return (0);
 		}
+		sem_post(philo->eats);
 	}
 	return (0);
 }

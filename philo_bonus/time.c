@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:32:50 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/20 18:13:49 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:47:52 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,16 @@ long	long	aion(long long born_time)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000) - born_time);
 }
 
-	bool	hypnos(long long sleep_time, t_philo *philo)
-	{
-		long long	sleep_start;
-		long long	cur_time;
+bool	hypnos(long long sleep_time, t_philo *philo)
+{
+	long long	sleep_start;
+	long long	cur_time;
 
-		sleep_start = aion(philo->born_time);
-		cur_time = sleep_start;
-		while (cur_time - sleep_start < sleep_time)
-		{
-			// if (stop_check(philo->data))
-			// 	return (false);
-			cur_time = aion(philo->born_time);
-		}
-		return (true);
+	sleep_start = aion(philo->born_time);
+	cur_time = sleep_start;
+	while (cur_time - sleep_start < sleep_time)
+	{
+		cur_time = aion(philo->born_time);
 	}
+	return (true);
+}

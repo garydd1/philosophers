@@ -6,101 +6,33 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:03:07 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/19 21:27:14 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:46:36 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-// bool	stop_check(t_data *data)
-// {
-// 	pthread_mutex_lock(&data->genesis);
-// 	if (data->stop == true)
-// 	{
-// 		pthread_mutex_unlock(&data->genesis);
-// 		return (true);
-// 	}
-// 	pthread_mutex_unlock(&data->genesis);
-// 	return (false);
-// }
-
-// static void	pick_forks(t_philo *philo, t_data *data)
-// {
-// 	pthread_mutex_lock(&data->forks[philo->id].mutex);
-// 	hermes(philo->data, philo, "has taken a fork", "");
-// 	if (data->philo_nbr == 1)
-// 	{
-// 		philo->allowed_to_eat = false;
-// 		return ;
-// 	}
-// 	if (philo->id + 1 == data->philo_nbr)
-// 		pthread_mutex_lock(&data->forks[0].mutex);
-// 	else
-// 		pthread_mutex_lock(&data->forks[philo->id + 1].mutex);
-// 	hermes(philo->data, philo, "has taken a fork	", "");
-// }
-
-// /**
-//  * @brief Manage the pick up of the forks with their respective mutexes.
-//  * Demeter is the goddess associated with fertility, agriculture and havest.
-//  * 
-//  * @param philo 
-//  * @return int 
-//  */
-// static bool	demeter(t_philo *philo, t_data *data)
-// {
-// 	int64_t	cur_time;
-
-// 	pick_forks(philo, data);
-// 	pthread_mutex_lock(&data->aux_mtx);
-// 	if (data->stop == false && philo->allowed_to_eat == true)
-// 	{
-// 		philo->eat_count++;
-// 		cur_time = kronos(philo->born_time);
-// 		philo->last_ate = cur_time;
-// 		printf("%lld\tms | philosopher %d is eating\n", \
-// 		kronos(philo->born_time), philo->id + 1);
-// 		pthread_mutex_unlock(&data->aux_mtx);
-// 		if (hypnos(philo->atributes[TTEAT], philo) == false)
-// 			return (unpick_forks(philo, data), \
-// 			pthread_mutex_unlock(&data->aux_mtx), false);
-// 	}
-// 	else
-// 		pthread_mutex_unlock(&data->aux_mtx);
-// 	unpick_forks(philo, data);
-// 	return (true);
-// }
-
-// /**
-//  * @brief Receives an specific philosopher struct
-//  * which has access to the main data through philo->data.
-//  * For Heraclitus, physis represents the dynamic changing of reality.
-//  * @param arg 
-//  * @return void* 
-//  */
-// void	*physis(void *arg)
-// {
-// 	t_philo	*philo;
-
-// 	philo = (t_philo *) arg;
-// 	if ((philo->id) % 2 == 1)
-// 	{
-// 		hypnos(20, philo);
-// 	}
-// 	while (philo->eat_count < philo->atributes[MUST_EAT] || \
-// 	philo->atributes[MUST_EAT] == MAX_EAT)
-// 	{
-// 		if (stop_check(philo->data) == true)
-// 			break ;
-// 		if (demeter(philo, philo->data) == false)
-// 			return (NULL);
-// 		hermes(philo->data, philo, "is sleeping", "");
-// 		if (hypnos(philo->atributes[TTSLEEP], philo) == false)
-// 			return (NULL);
-// 		hermes(philo->data, philo, "is thinking", "");
-// 	}
-// 	return (NULL);
-// }
+/**
+ * @brief Free all allocated memory
+ * And close all semaphores
+ * @param data 
+ * @return int 
+ */
+int	freelancer(t_data *data)
+{
+	free(data->philos);
+	sem_unlink("/forks");
+	sem_unlink("/write");
+	sem_unlink("/start");
+	sem_unlink("/dead");
+	sem_unlink("/ate");
+	sem_close(data->forks_sem);
+	sem_close(data->write_sem);
+	sem_close(data->start_sem);
+	sem_close(data->dead_sem);
+	sem_close(data->ate_sem);
+	return (0);
+}
 
 /**
  * @brief 
@@ -122,13 +54,6 @@ int	main(int argc, char **argv)
 	i = 0;
 	if (init(&data, argc, argv) == 1)
 		return (printf("INIT ERRORS"), 1);
-	printf("INIT OK\n");
-	// thanatos(&data);
-	// while (i < data.philo_nbr)
-	// {
-	// 	pthread_join(data.philos[i].tid, NULL);
-	// 	i++;
-	// }
-	// morgan_freeman(&data);
+	freelancer(&data);
 	return (0);
 }

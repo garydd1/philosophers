@@ -4,7 +4,7 @@
 
 NAME        := philo_bonus
 CC        := gcc -pthread
-FLAGS    := -Wall -Wextra -Werror 
+FLAGS    := -Wall -Wextra -Werror
 HEADER = ./philosophers.h
 OBJ_DIR = ./obj
 ################################################################################

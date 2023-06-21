@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 22:02:03 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/19 19:35:13 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:52:35 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ bool	ft_error_aux(char *argv)
 	int	i;
 
 	i = 0;
+	if (argv[0] == '0')
+	{
+		printf("No phils, no game\n");
+		return (true);
+	}
 	while (argv[i])
 	{
 		if (ft_is_num(argv[i]) == 0)

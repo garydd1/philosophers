@@ -6,7 +6,7 @@
 /*   By: dgarizad <dgarizad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 21:43:54 by dgarizad          #+#    #+#             */
-/*   Updated: 2023/06/20 21:52:31 by dgarizad         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:12:14 by dgarizad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	hera(t_philo *philo, int i)
 {
 	if (philo->id % 2 == 1)
 		usleep(10);
+	sem_unlink("/eats");
+	philo->eats = sem_open("/eats", O_CREAT, 0644, 1);
 	if (pthread_create(&(philo->data->hydra_th), NULL, hydra, philo) != 0)
 		return (printf("Error pthread create\n"), 1);
 	i = 0;
